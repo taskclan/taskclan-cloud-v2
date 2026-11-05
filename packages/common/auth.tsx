@@ -155,7 +155,9 @@ export const useIsMFAEnabled = () => {
   return user !== null && user.factors && user.factors.length > 0
 }
 
-export const signOut = async () => await gotrueClient.signOut()
+// This browser only: the default scope (global) would also end the account's
+// sessions in every other product on the same Supabase project.
+export const signOut = async () => await gotrueClient.signOut({ scope: 'local' })
 
 export const logOut = async () => {
   await signOut()

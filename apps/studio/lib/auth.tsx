@@ -52,7 +52,11 @@ export function useSignOut() {
   const { clearStorage: clearAssistantStorage } = useAiAssistantStateSnapshot()
 
   return useCallback(async () => {
-    const result = await gotrueClient.signOut()
+    // This browser only. The console signs in against the Supabase project
+    // every Taskclan product shares, and the default scope (global) would end
+    // the account's sessions in all of them, on every device. The password
+    // forms still end the other sessions on purpose (`scope: 'others'`).
+    const result = await gotrueClient.signOut({ scope: 'local' })
     posthogClient.reset()
     clearLocalStorage()
     // Clear Assistant IndexedDB
